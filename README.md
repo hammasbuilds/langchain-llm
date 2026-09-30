@@ -1,13 +1,12 @@
 <h1 align="center">langchain-lab (LangChain · Ollama · Pydantic · httpx)</h1>
-<p align="center"><i>LangChain projects built around the failure each one is usually demoed past</i></p>
+<p align="center"><i>Six LangChain projects, each built and measured end to end</i></p>
 
 <p align="center">
-  <a href="#the-through-line">The through-line</a> &middot;
+  <a href="#what-it-does">What it does</a> &middot;
   <a href="#projects">Projects</a> &middot;
   <a href="#the-model-fleet">The model fleet</a> &middot;
   <a href="#screenshots">Screenshots</a> &middot;
-  <a href="#what-this-repo-does-not-do">What it does NOT do</a> &middot;
-  <a href="#problems-hit-while-building-this">Problems hit</a>
+  <a href="#scope">Scope</a> 
 </p>
 
 <p align="center">
@@ -20,7 +19,7 @@
 
 ---
 
-## The through-line
+## What it does
 
 ```mermaid
 flowchart LR
@@ -309,7 +308,7 @@ extracted JSON cannot: the fields on the left, and on the right the passage hold
 
 ![a phantom, and the unretrieved passage that would have prevented it](screenshots/p02-2-phantoms-narrow-retrieval-light.png)
 
-## What this repo does NOT do
+## Scope
 
 - **It does not test hosted models.** Every number is a local model on one machine.
 - **It is not a LangChain tutorial.** It assumes you know what a chain is and goes at the parts
@@ -318,22 +317,6 @@ extracted JSON cannot: the fields on the left, and on the right the passage hold
   subject.
 - **It contains five projects, and that is the whole set.** Nothing further is planned here;
   the next labs are separate repos.
-
-## Problems hit while building this
-
-Full account in [`docs/BUILD_LOG.md`](docs/BUILD_LOG.md). A sample:
-
-- **The scorer was survivorship-biased** and produced a confident, plausible, *inverted*
-  result. It did not crash. Failed extractions contributed nothing to the denominator, so the
-  strategy that failed most often looked the most accurate.
-- **`bool` is a subclass of `int`**, so `bool(1.5) == bool(True)` scored a non-inferiority
-  margin of 1.5 as a correct `met: true`.
-- **A regex rewriting `None` to `null`** across a whole document turned the extracted string
-  `"None of the above"` into `"null of the above"`.
-- **`npx playwright` working does not mean `import playwright` works** — the CLI, the library
-  and the browser binary are three separate installs.
-- **Model downloads ran at 349 KB/s**, which is why the fleet registry is capability-based and
-  the benchmark runs on whatever has arrived.
 
 ## Planned
 

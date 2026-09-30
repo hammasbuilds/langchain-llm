@@ -10,7 +10,7 @@ never in the user's message.
 
 ---
 
-## The result
+## Results
 
 | defence | loud | quiet | gap |
 |---|---|---|---|
@@ -102,7 +102,7 @@ answer:
 
 ![the same objective, filtered in one register and untouched in the other](../../screenshots/p04-2-loud-vs-quiet-light.png)
 
-## What this does NOT do
+## Scope
 
 - **`tool_call` measures a mention, not a call.** No tool is bound to this chain, so that
   objective can only be scored by the model naming `send_email` in its text. A chain with real
@@ -117,15 +117,3 @@ answer:
 - **It is not a claim that these defences are useless.** They address instruction injection, and
   on the loud set `sanitise` addresses it completely. The claim is narrower: a defence that sorts
   text into instructions and data cannot help when the attack is in the data.
-
-## Problems hit while building this
-
-- **A flat 17% across every defence read as a broken harness.** It was the real answer, visible
-  only in the per-objective breakdown. A pooled rate over six objectives where one always
-  succeeds and five never do is a number that describes nothing.
-- **`Ledger` is a `@dataclass`, so two empty ledgers compared equal**, and LangChain
-  deduplicates callback handlers. Passing `callbacks=[inner, outer]` silently dropped the outer
-  one, and the benchmark reported **0 model calls** for a run that made 180. Fixed with
-  `@dataclass(eq=False)` and pinned by `test_two_fresh_ledgers_are_not_equal`. Same family as
-  project 01's `bool`-is-an-`int` bug: a language default doing something reasonable in general
-  and wrong here.

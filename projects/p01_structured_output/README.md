@@ -13,7 +13,7 @@ this* invents a result.
 
 ---
 
-## The finding
+## Results
 
 Run the grid once with the obvious scoring — accuracy over the extractions that parsed — and
 the hardest schema level says this:
@@ -153,7 +153,7 @@ built to catch is not reliably reproducible on a single abstract; it is a 27% ra
 corpus, and a demo that only ever shows the failure case would misrepresent how often it
 happens.
 
-## What this does NOT do
+## Scope
 
 - **It does not test a hosted model.** Every number here is `qwen2.5:3b-instruct` on one
   machine. Whether GPT-4-class models fabricate at 27% is not something this measures, and the
@@ -166,14 +166,3 @@ happens.
   randomly sampled baseline measures the sampler.
 - **It does not claim `constrained` is always right.** It is worse at L4, and it raises the
   omission rate.
-
-## Problems hit while building this
-
-The full account is in [`docs/BUILD_LOG.md`](../../docs/BUILD_LOG.md). The three worth knowing:
-
-1. **The scorer was survivorship-biased** and produced a confident, plausible, inverted
-   result. It did not crash. This is the entire project.
-2. **`bool` is a subclass of `int` in Python**, so `bool(1.5) == bool(True)` scored a
-   non-inferiority margin of 1.5 as a correct `met: true`.
-3. **JSON repair corrupted a legitimate string** — a regex rewriting `None` to `null` across
-   the whole document turned the value `"None of the above"` into `"null of the above"`.

@@ -27,7 +27,7 @@ that is hoped about; they are composed from labelled `Passage` objects, each dec
 ground-truth fields it contains. Whether the evidence reached the model is then true by
 construction rather than inferred from the output.
 
-## The result
+## Results
 
 Same model, same schema, same prompt, same extraction strategy. The only variable is what
 reached the context.
@@ -66,7 +66,7 @@ there — most valid, most accurate. It is the best one here too. But its guaran
 not epistemic: it can promise a well-formed answer and it cannot promise a grounded one, and
 with a retriever upstream that gap is where the damage lands.
 
-## The phantom rate goes the wrong way, and that is the second finding
+## The phantom rate goes the other way
 
 Read the table again. As retrieval improves, the **phantom rate rises** — 69%, 86%, 100% — while
 the **phantom count** collapses — 61, 54, 11.
@@ -150,7 +150,7 @@ The same paper with nothing withheld, and then with per-field queries at a third
 
 ![per-field retrieval recovers most of the gap](../../screenshots/p02-4-per-field-fix-light.png)
 
-## What this does NOT do
+## Scope
 
 - **It does not show retrieval is bad.** It shows one specific, extremely common query
   construction is bad, and measures a fix that costs more embedding calls.
@@ -163,15 +163,3 @@ The same paper with nothing withheld, and then with per-field queries at a third
 - **It does not use real papers.** They are assembled from project 01's synthetic corpus, so
   ground truth is exact and shared between the two projects.
 - **It tests one model** — `qwen2.5:3b-instruct` — and one embedding model.
-
-## Problems hit while building this
-
-- **The first retrieval numbers looked like a broken retriever.** Recall of 9% at k=2 suggested a
-  bug. Printing the full ranking showed the scores were sensible and well separated; the query
-  was the problem, not the code. Reading the ranking rather than the metric is what turned a
-  suspected bug into the project's finding.
-- **`nomic-embed-text` is reported by ollama as `nomic-embed-text:latest`,** so a registry
-  membership test said a pulled model was missing — and the benchmark would have skipped it
-  silently. `installed_tags()` now returns both spellings.
-- **`lucky_phantom` had to be separated from `grounded_correct`.** A guess that happens to be
-  right is still a guess, and folding the two together hid 8 phantoms in the `k4` row.

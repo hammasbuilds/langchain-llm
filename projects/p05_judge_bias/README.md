@@ -21,7 +21,7 @@ one padded with true but redundant elaboration (2.7x to 3.5x longer). There is n
 difference to detect. The correct verdict is "tie", and every preference recorded is bias with
 no signal underneath it.
 
-## The result
+## Results
 
 | judge prompt | flipped on reorder | position-decided | said tie | **longer won** |
 |---|---|---|---|---|
@@ -118,7 +118,7 @@ And the length effect across the corpus:
 
 ![the longer answer winning every decisive tie-pair comparison](../../screenshots/p05-3-length-bias-light.png)
 
-## What this does NOT do
+## Scope
 
 - **One model, one size.** `qwen2.5:3b-instruct`. A larger judge is very likely less
   position-sensitive; whether it is less length-sensitive is exactly the question this setup is
@@ -135,18 +135,3 @@ And the length effect across the corpus:
 - **The verbose answers are padded with true material.** They are not worse, just longer. If
   elaboration were adding errors, preferring the shorter answer would be correct judgement
   rather than bias.
-
-## Problems hit while building this
-
-- **The corpus had to be checked for a confound I nearly shipped.** If the `wrong` answer were
-  also the shortest, "picks the wrong answer" and "picks the shortest answer" would be the same
-  behaviour and the quality pairs would measure nothing.
-  `test_concise_and_wrong_are_similar_in_length` pins the concise/wrong ratio under 1.75, and
-  `test_the_wrong_answer_is_not_the_longest` stops the other direction.
-- **`n/a` in a results table needed explaining rather than formatting away.** It looked like a
-  rendering bug. It was the judge declaring 14 of 16 factually unequal pairs to be ties, which
-  is the second finding of the project.
-- **Verdict parsing takes the first token, not the last.** A judge told to reply with one
-  character often replies "A is better than B", and a naive search that took the last match
-  would have recorded that as a vote for B — silently inverting an unknown share of the
-  verdicts.

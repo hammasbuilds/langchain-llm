@@ -9,7 +9,7 @@ it when asked.
 
 ---
 
-## The result
+## Results
 
 Five repeats per summarising strategy, because the first two runs disagreed sharply and
 reporting either alone would have been a claim about one sample. Range in brackets where runs
@@ -127,7 +127,7 @@ The same architecture with the guarded prompt:
 
 ![the guarded summary keeps everything](../../screenshots/p03-3-guarded-summary-keeps-them-light.png)
 
-## What this does NOT do
+## Scope
 
 - **One conversation, one model, one domain.** 24 turns of a data-migration planning session on
   `qwen2.5:3b-instruct`. A larger model may well summarise more faithfully under the naive
@@ -140,16 +140,3 @@ The same architecture with the guarded prompt:
   architecture, not the wording.
 - **Recall is scored by string match**, with accepted alternative spellings listed per fact. A
   model that paraphrases a value into a form not listed is scored wrong.
-
-## Problems hit while building this
-
-- **The first version of this project tested nothing.** The summarisation prompt had been written
-  with "preserve every number, name and date" already in it, so the experiment measured a
-  summariser that had been told the answer. Every strategy scored 100% and the finding was that
-  summarisation is fine. Splitting the prompt into `naive` and `guarded` turned a null result
-  into the project.
-- **Two consecutive runs disagreed by 50 points**, which is why the benchmark takes `--repeats`.
-  Temperature is 0; the variance is in what the summariser writes, not how it is sampled.
-- **`buried` had to be separated from `dropped`.** Without the deterministic survival check
-  there is no way to tell a memory that lost a value from a reader that could not find one, and
-  they have completely different fixes.
