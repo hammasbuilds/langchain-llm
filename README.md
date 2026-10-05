@@ -276,7 +276,6 @@ projects/
     judge.py         three judge prompts, every pair run in both orders
     benchmark.py     writes RESULTS.md
 scripts/shoot.mjs    drives the real app in a real browser for the screenshots
-docs/BUILD_LOG.md    what went wrong while building this
 ```
 
 ## Requirements
