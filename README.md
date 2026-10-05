@@ -1,5 +1,5 @@
-<h1 align="center">langchain-lab (LangChain · Ollama · Pydantic · httpx)</h1>
-<p align="center"><i>Six LangChain projects, each built and measured end to end</i></p>
+<h1 align="center">langchain-llm (LangChain · Ollama · Pydantic · httpx)</h1>
+<p align="center"><i>Five LangChain projects, each built and measured end to end</i></p>
 
 <p align="center">
   <a href="#what-it-does">What it does</a> &middot;
@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/hammasbuilds/langchain-lab/actions/workflows/ci.yml"><img src="https://github.com/hammasbuilds/langchain-lab/actions/workflows/ci.yml/badge.svg" alt="ci"></a>
+  <a href="https://github.com/hammasbuilds/langchain-llm/actions/workflows/ci.yml"><img src="https://github.com/hammasbuilds/langchain-llm/actions/workflows/ci.yml/badge.svg" alt="ci"></a>
   <img src="https://img.shields.io/badge/python-3.11%2B-blue" alt="python">
   <img src="https://img.shields.io/badge/models-local%20via%20ollama-success" alt="models">
   <img src="https://img.shields.io/badge/API%20keys-none%20required-success" alt="api keys">
@@ -208,8 +208,8 @@ implies a fleet that was not there.
 ## Quick start
 
 ```bash
-git clone https://github.com/hammasbuilds/langchain-lab
-cd langchain-lab
+git clone https://github.com/hammasbuilds/langchain-llm
+cd langchain-llm
 
 make install
 ollama pull qwen2.5:3b-instruct
