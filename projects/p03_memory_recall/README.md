@@ -1,4 +1,4 @@
-# 03 · Memory that forgets the wrong thing (LangChain, Ollama, FastAPI)
+# 03 · Memory that forgets the wrong thing (LangChain, Ollama)
 
 **The standard summarising memory, with the standard prompt, performs identically to a free
 sliding window — and costs five model calls per conversation to do it.**
@@ -115,28 +115,6 @@ make install
 ollama pull qwen2.5:3b-instruct
 
 uv run python -m projects.p03_memory_recall.benchmark --repeats 5   # writes RESULTS.md
-uv run uvicorn projects.p03_memory_recall.web:app --port 8103
 ```
 
-The UI compresses the conversation live and probes every fact, showing what the strategy kept
-beside what the model could then answer:
-
-![the naive summary loses every constraint and date](../../screenshots/p03-2-naive-summary-loses-the-constraints-light.png)
-
-The same architecture with the guarded prompt:
-
-![the guarded summary keeps everything](../../screenshots/p03-3-guarded-summary-keeps-them-light.png)
-
-## Scope
-
-- **One conversation, one model, one domain.** 24 turns of a data-migration planning session on
-  `qwen2.5:3b-instruct`. A larger model may well summarise more faithfully under the naive
-  prompt; this measures that the prompt is load-bearing at this size, not that it is load-bearing
-  everywhere.
-- **It does not test a real memory backend.** No vector store, no entity memory, no retrieval
-  over history. Those are separate strategies worth measuring and would each be another variable.
-- **It does not claim the guarded prompt is optimal.** It is one paragraph that happened to close
-  the gap completely on this corpus. The point is the size of the effect relative to the
-  architecture, not the wording.
-- **Recall is scored by string match**, with accepted alternative spellings listed per fact. A
-  model that paraphrases a value into a form not listed is scored wrong.
+Results are `qwen2.5:3b-instruct` on one 24-turn conversation (a data-migration planning session). Recall is scored by string match against the accepted spellings listed per fact.

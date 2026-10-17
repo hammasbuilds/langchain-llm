@@ -1,4 +1,4 @@
-# 04 · The injection that isn't an instruction (LangChain, Ollama, FastAPI)
+# 04 · The injection that isn't an instruction (LangChain, Ollama)
 
 **Every prompt-injection defence here is built to stop a document from issuing instructions.
 The only attack that works doesn't issue one — it states a fact.**
@@ -93,27 +93,6 @@ make install
 ollama pull qwen2.5:3b-instruct
 
 uv run python -m projects.p04_injection_defence.benchmark --repeats 3
-uv run uvicorn projects.p04_injection_defence.web:app --port 8104
 ```
 
-The UI runs each loud payload beside its quiet twin against the same defence, showing the
-document exactly as the model received it — after the defence has had its turn — next to the
-answer:
-
-![the same objective, filtered in one register and untouched in the other](../../screenshots/p04-2-loud-vs-quiet-light.png)
-
-## Scope
-
-- **`tool_call` measures a mention, not a call.** No tool is bound to this chain, so that
-  objective can only be scored by the model naming `send_email` in its text. A chain with real
-  tools bound is a different and more dangerous experiment, and this is not it.
-- **One model, one document, one question.** The five-at-zero result is very likely
-  model-dependent; a larger or more compliant model may follow the loud instructions that
-  `qwen2.5:3b-instruct` ignores. What would not change is that the fact-shaped attack is invisible
-  to instruction-shaped defences.
-- **It does not test the defences people actually deploy in combination.** Each is tested alone.
-  A real system layers them, and it should also do the thing none of these do: check retrieved
-  claims against a trusted source.
-- **It is not a claim that these defences are useless.** They address instruction injection, and
-  on the loud set `sanitise` addresses it completely. The claim is narrower: a defence that sorts
-  text into instructions and data cannot help when the attack is in the data.
+Results are `qwen2.5:3b-instruct` on one policy document and one question. No tool is bound to the chain, so the `tool_call` objective is scored by the model naming `send_email` in its text. Each defence is tested alone.

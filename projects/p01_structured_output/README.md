@@ -1,4 +1,4 @@
-# 01 · Structured output under pressure (LangChain, Ollama, Pydantic v2, FastAPI)
+# 01 · Structured output under pressure (LangChain, Ollama, Pydantic v2)
 
 **A valid document and a correct one are different things, and the metric everyone reports
 cannot tell them apart.**
@@ -105,7 +105,7 @@ fields, and unconstrained generation gets it right a quarter of the time.
 ## The corpus
 
 Twelve abstracts, hand-written for this repo, with ground truth written before any model saw
-them. **They are synthetic and the registration IDs are invented** — real abstracts were not
+them. **They were written for this benchmark and the registration IDs are made up** — real abstracts were not
 used because their ground truth is itself a judgement call, and because attaching extracted
 medical claims to a toy model is a good way to put a wrong number on the internet.
 
@@ -120,49 +120,6 @@ make install
 ollama pull qwen2.5:3b-instruct
 
 make bench01                # regenerates RESULTS.md; nothing in this README is typed by hand
-make web01                  # http://127.0.0.1:8101
 ```
 
-The web UI runs a single abstract through any or all four strategies live and marks every
-disagreement — **red for fabricated** (the abstract says nothing, the model supplied a value)
-and **orange for omitted** (the abstract states it, the model returned `null`).
-
-![the form](../../screenshots/p01-1-form-light.png)
-
-The clearest thing to run is `t09` at **L5**, which is the whole finding on one screen. Three
-strategies return nothing usable — and the schema errors they return are worth reading, since
-both failures are the union discriminator. `constrained` returns a valid document scoring 7/9:
-
-![the same abstract at L5: three strategies invalid, constrained valid at 78%](../../screenshots/p01-3-union-level-light.png)
-
-Note what the corrected scoring does here. The three failures read **0%**, not "no result" and
-not a score computed over nothing. That is the denominator fix visible in a single view: a
-strategy does not get to be accurate on the attempts it never completed.
-
-`constrained`'s two errors are real and worth seeing rather than hiding — it reports
-`direction: no_difference` where the truth is `favours_comparator`, and a non-inferiority
-`margin` of `0.1` where the abstract says 10 percentage points. Valid, well-typed, and wrong.
-
-By contrast, `t02` at L4 — which omits four fields — is handled perfectly by all four
-strategies, fabricating nothing:
-
-![all four strategies agreeing on an abstract full of omissions](../../screenshots/p01-2-omissions-all-strategies-light.png)
-
-That screenshot is kept precisely because it is undramatic. The fabrication this project was
-built to catch is not reliably reproducible on a single abstract; it is a 27% rate across the
-corpus, and a demo that only ever shows the failure case would misrepresent how often it
-happens.
-
-## Scope
-
-- **It does not test a hosted model.** Every number here is `qwen2.5:3b-instruct` on one
-  machine. Whether GPT-4-class models fabricate at 27% is not something this measures, and the
-  fabrication finding should be assumed local to this model until the fleet is larger.
-- **It is not a multi-model result yet.** The registry holds six models and the benchmark
-  iterates whatever is installed, but only one was pulled when these numbers were produced.
-  The "By model" table in `RESULTS.md` has one row and says so.
-- **It does not use real trial data**, so nothing here is a claim about clinical evidence.
-- **It does not measure `temperature > 0`.** Everything runs at 0. A comparison against a
-  randomly sampled baseline measures the sampler.
-- **It does not claim `constrained` is always right.** It is worse at L4, and it raises the
-  omission rate.
+Results are `qwen2.5:3b-instruct` at temperature 0 on one machine. The abstracts were written for this benchmark with hand-written ground truth, so nothing here is a claim about clinical evidence.

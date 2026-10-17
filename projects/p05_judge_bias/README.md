@@ -1,4 +1,4 @@
-# 05 · The judge prefers the longer answer, and saying so doesn't help (LangChain, Ollama, FastAPI)
+# 05 · The judge prefers the longer answer, and saying so doesn't help (LangChain, Ollama)
 
 **In 30 out of 30 decisive comparisons between two equally correct answers, the judge chose the
 longer one — including under a rubric that explicitly told it length was not a criterion.**
@@ -107,31 +107,6 @@ make install
 ollama pull qwen2.5:3b-instruct
 
 uv run python -m projects.p05_judge_bias.benchmark --repeats 2
-uv run uvicorn projects.p05_judge_bias.web:app --port 8105
 ```
 
-The UI runs one pair in both orders side by side, so a flip is visible as a flip:
-
-![the same pair judged in both orders, with the verdict flipping](../../screenshots/p05-2-position-flip-light.png)
-
-And the length effect across the corpus:
-
-![the longer answer winning every decisive tie-pair comparison](../../screenshots/p05-3-length-bias-light.png)
-
-## Scope
-
-- **One model, one size.** `qwen2.5:3b-instruct`. A larger judge is very likely less
-  position-sensitive; whether it is less length-sensitive is exactly the question this setup is
-  built to ask, and this run cannot answer it.
-- **It does not compare against human labels.** The ground truth here is constructed, not
-  elicited: tie pairs are ties by construction and quality pairs have a documented error. That
-  is the point — it removes the human-agreement confound — but it also means this is not a
-  claim about agreement with human preference.
-- **Eight questions.** Enough to show a 30/30 effect; not enough to estimate a rate precisely.
-  A 30/30 result needs less N than a 60/40 one, which is the only reason the corpus is this
-  small.
-- **It does not test self-preference bias** (a judge favouring its own outputs), which needs
-  two models and is the obvious next thing.
-- **The verbose answers are padded with true material.** They are not worse, just longer. If
-  elaboration were adding errors, preferring the shorter answer would be correct judgement
-  rather than bias.
+Results are `qwen2.5:3b-instruct` as the judge, on eight questions. Tie pairs are ties by construction and quality pairs carry a documented error; the verbose answers are padded with true material only.

@@ -1,4 +1,4 @@
-.PHONY: install test test-live lint bench bench01 bench02 bench03 bench04 models all
+.PHONY: install test test-live lint bench bench01 bench02 bench03 bench04 bench05 models all
 
 install:
 	uv sync --extra dev
