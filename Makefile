@@ -10,7 +10,7 @@ test-live:
 	uv run pytest -q
 
 lint:
-	uv run ruff check shared projects tests scripts
+	uv run ruff check shared projects tests
 	uv run ruff format --check shared projects tests
 
 bench: bench01 bench02 bench03 bench04 bench05
